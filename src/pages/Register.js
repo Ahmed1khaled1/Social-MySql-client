@@ -21,7 +21,17 @@ function Register() {
     try {
       await axios.post("https://social-my-sql-api.vercel.app/api/auth/register", inputs);
     } catch (err) {
-      setErr(err.response.data);
+      if (err.response) {
+        // Server responded with a status other than 2xx
+        console.error("Error response:", err.response);
+        setErr(err.response.data);
+      } else if (err.request) {
+        // Request was made but no response received
+        console.error("Error request:", err.request);
+      } else {
+        // Something else happened
+        console.error("Error message:", err.message);
+      }
     }
   };
 
